@@ -1,32 +1,29 @@
 <template>
-  <vs-row vs-justify="center">
+  <vs-row vs-justify="right">
     <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
       <vs-card color="dark">
         <div slot="header">
           <vs-row vs-justify="flex-end">
-            <em>Publier par {{ link.createdBy.username }} le {{ link.createdAt | formatDate }}</em>
+            <em>Publier par {{ comment.createdBy.username }} le {{ comment.createdAt | formatDate }}</em>
           </vs-row>
         </div>
         <div>
-          <a class="titleLink" :href="link.url"><div><code>{{ link.url | formatLink }}</code></div></a>
+          <div><code>{{ comment.content }}</code></div>
         </div>
         <div slot="footer">
-          <vs-row vs-justify="flex-start">
-            <router-link :to="{ name: 'linkDetail', params: { id: link.id } }"><vs-button color="primary" type="gradient" icon="turned_in_not">Commentaires</vs-button></router-link>
-          </vs-row>
           <vs-row vs-justify="flex-end">
             <vs-button
               class="btnVote"
               type="gradient"
               color="success"
               icon="thumb_up"
-            >{{link.upvotesCount}}</vs-button>
+            >{{comment.upvotesCount}}</vs-button>
             <vs-button
               class="btnVote"
               type="gradient"
               color="danger"
               icon="thumb_down"
-            >{{link.downvotesCount}}</vs-button>
+            >{{comment.downvotesCount}}</vs-button>
           </vs-row>
         </div>
       </vs-card>
@@ -37,23 +34,22 @@
 <script>
 export default {
   props: {
-    link: Object
+    comment: Object,
   },
   filters: {
-    formatLink(v) {
-      let res = "";
-      if(v.length > 140){
-        res = v.slice(0, 30) + "...";
-      }else{
-        res = v
-      }
-      return res
-    },
     formatDate(v) {
-      function pad(s) { return (s < 10) ? '0' + s : s; }
+      function pad(s) {
+        return s < 10 ? "0" + s : s;
+      }
       var d = new Date(v);
-      return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/') + " à " + d.getHours() + ":" + d.getMinutes()
-    }
+      return (
+        [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join("/") +
+        " à " +
+        d.getHours() +
+        ":" +
+        d.getMinutes()
+      );
+    },
   },
 };
 </script>

@@ -29,3 +29,9 @@ export default {
   },
 };
 </script>
+
+<style>
+li {
+	margin-bottom: 1rem;
+}
+</style>
