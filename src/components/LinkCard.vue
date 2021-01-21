@@ -20,12 +20,14 @@
               type="gradient"
               color="success"
               icon="thumb_up"
+              @click="upVote"
             >{{link.upvotesCount}}</vs-button>
             <vs-button
               class="btnVote"
               type="gradient"
               color="danger"
               icon="thumb_down"
+              @click="downVote"
             >{{link.downvotesCount}}</vs-button>
           </vs-row>
         </div>
@@ -36,8 +38,13 @@
 
 <script>
 export default {
+  data(){
+    return {
+      link: Object,
+    }
+  },
   props: {
-    link: Object
+    linkProps: Object
   },
   filters: {
     formatLink(v) {
@@ -55,6 +62,19 @@ export default {
       return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/') + " à " + d.getHours() + ":" + d.getMinutes()
     }
   },
+  methods:{
+    async upVote(){
+      await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/links/" + this.link.id + "/upvote", "PUT", {}, true);
+      this.link = await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/links/" + this.link.id , "GET");
+    },
+    async downVote(){
+      await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/links/" + this.link.id + "/downvote", "PUT", {}, true);
+      this.link = await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/links/" + this.link.id , "GET");
+    }
+  },
+  mounted(){
+    this.link = this.linkProps
+  }
 };
 </script>
 

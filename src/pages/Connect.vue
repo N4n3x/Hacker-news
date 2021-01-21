@@ -14,7 +14,7 @@
                 label="Identifiant"
                 class="inputx"
                 placeholder=""
-                v-model="$v.username.$model"
+                v-model="$v.usernameTemp.$model"
               />
             </vs-row>
             <vs-row vs-type="flex" vs-justify="center">
@@ -40,27 +40,34 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from "vuex";
 import { required } from 'vuelidate/lib/validators';
 export default {
+  computed: {
+    ...mapState("auth",["token", "username", "justRegister"]),
+  },
   data(){
     return {
-      username: "",
+      usernameTemp: "",
       password: ""
     }
   },
   methods: {
+    ...mapMutations("auth",["setToken", "setUsername", "setJustRegister"]),
     async submitForm() {
       // traitement
       if(!this.$v.$invalid){
-        console.log("valide !",this.username,this.password);
+        console.log("valide !",this.usernameTemp,this.password);
         let rep = await this.fetchAPI({
-          username: this.username,
+          username: this.usernameTemp,
           password:this.password
           });
           console.log(rep);
-          // this.$router.push({ name : "app" });
+          this.setToken(rep.token);
+          this.setUsername(rep.username);
+          this.$router.push({ name : "app" });
       }else{
-        console.log("invalide !",this.username,this.password,this.confirPassword);
+        console.log("invalide !",this.usernameTemp,this.password,this.confirPassword);
       }
       // this.$router.push({ name : "app" });
     }, 
@@ -76,10 +83,17 @@ export default {
       const data = await res.json();
       return data
     },
+    isJustRegistered(){
+      if(this.justRegister){
+        this.$sendNotif("Compte créé !", "Votre compte a bien été créé, merci je vous connecter.", "success")
+        this.setJustRegister(false);
+      }
+      
+    },
   },
   validations(){
     return {
-      username: {
+      usernameTemp: {
         required,
       },
       password: {
@@ -87,6 +101,9 @@ export default {
       },
       
     }
+  },
+  mounted(){
+    this.isJustRegistered()
   }
 };
 </script>

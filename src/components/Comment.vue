@@ -17,12 +17,14 @@
               type="gradient"
               color="success"
               icon="thumb_up"
+              @click="upVotesComment"
             >{{comment.upvotesCount}}</vs-button>
             <vs-button
               class="btnVote"
               type="gradient"
               color="danger"
               icon="thumb_down"
+              @click="downVotesComment"
             >{{comment.downvotesCount}}</vs-button>
           </vs-row>
         </div>
@@ -34,7 +36,12 @@
 <script>
 export default {
   props: {
-    comment: Object,
+    commentProps: Object,
+  },
+  data(){
+    return {
+      comment: Object,
+    }
   },
   filters: {
     formatDate(v) {
@@ -51,6 +58,19 @@ export default {
       );
     },
   },
+  methods: {
+    async upVotesComment(){
+      await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/comments/" + this.comment.id + "/upvote", "PUT", {}, true);
+      this.comment = await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/comments/" + this.comment.id , "GET");
+    },
+    async downVotesComment(){
+      await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/comments/" + this.comment.id + "/downvote", "PUT", {}, true);
+      this.comment = await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/comments/" + this.comment.id , "GET");
+    },
+  },
+  mounted(){
+    this.comment = this.commentProps;
+  }
 };
 </script>
 

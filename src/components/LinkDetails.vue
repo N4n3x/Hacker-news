@@ -20,7 +20,7 @@
         <div>
           <ul>
             <li v-for="comment in comments" :key="comment.id">
-              <comment :comment="comment"/>
+              <comment :commentProps="comment"/>
             </li>
           </ul>
         </div>
@@ -36,6 +36,7 @@
               type="gradient"
               color="success"
               icon="thumb_up"
+              @click="upVoteLink"
               >{{ link.upvotesCount }}</vs-button
             >
             <vs-button
@@ -43,6 +44,7 @@
               type="gradient"
               color="danger"
               icon="thumb_down"
+              @click="downVoteLink"
               >{{ link.downvotesCount }}</vs-button
             >
           </vs-row>
@@ -107,6 +109,14 @@ export default {
       }else{
         this.$router.push({ name : "404" });
       }
+    },
+    async upVoteLink(){
+      await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/links/" + this.link.id + "/upvote", "PUT", {}, true);
+      this.link = await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/links/" + this.link.id , "GET");
+    },
+    async downVoteLink(){
+      await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/links/" + this.link.id + "/downvote", "PUT", {}, true);
+      this.link = await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/links/" + this.link.id , "GET");
     },
   },
   beforeMount() {

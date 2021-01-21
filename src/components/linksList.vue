@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li v-for="link in links" :key="link.id">
-      <link-card :link="link" />
+      <link-card :linkProps="link" />
     </li>
   </ul>
 </template>
@@ -18,10 +18,8 @@ export default {
 	},
   methods: {
     async fetchAPI() {
-      const res = await fetch("https://hn-dotnet.herokuapp.com/api/links");
-      const data = await res.json();
-      this.links = data;
-      console.log(data);
+      const res = await this.$fetchAPI("https://hn-dotnet.herokuapp.com/api/links");
+      this.links = res;
     },
   },
   beforeMount() {

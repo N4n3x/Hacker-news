@@ -55,6 +55,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators';
+import { mapMutations } from "vuex";
 export default {
   data(){
     return {
@@ -65,6 +66,8 @@ export default {
     }
   },
   methods: {
+    
+    ...mapMutations("auth",["setJustRegister"]),
     async submitForm() {
       // traitement
       if(!this.$v.$invalid){
@@ -77,6 +80,7 @@ export default {
           if(rep >= 400){
             this.erreur = true;
           }else{
+            this.setJustRegister(true);
             this.$router.push({ name : "connect" });
           }
           
