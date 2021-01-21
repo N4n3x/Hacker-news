@@ -94,19 +94,29 @@ export default {
       let res = await fetch(
         "https://hn-dotnet.herokuapp.com/api/links/" + this.linkId
       );
-      let data = await res.json();
-      this.link = data;
-      res = await fetch(
-        "https://hn-dotnet.herokuapp.com/api/links/" + this.linkId + "/comments"
-      );
-      data = await res.json();
-      this.comments = data;
-      console.log(data)
+      if(res.status == 200){
+        console.log(res.status)
+        let data = await res.json();
+        this.link = data;
+        res = await fetch(
+          "https://hn-dotnet.herokuapp.com/api/links/" + this.linkId + "/comments"
+        );
+        data = await res.json();
+        this.comments = data;
+        console.log(data)
+      }else{
+        this.$router.push({ name : "404" });
+      }
     },
   },
   beforeMount() {
     this.fetchAPI();
   },
+  watch: {
+    linkId(){
+      this.fetchAPI();
+    }
+  }
 };
 </script>
 

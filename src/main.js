@@ -1,16 +1,20 @@
-import Vue from 'vue'
-import App from './App.vue'
-import VueRouter from 'vue-router'
-import Vuesax from 'vuesax'
-import 'vuesax/dist/vuesax.css'
+import Vue from 'vue';
+import App from './App.vue';
+import VueRouter from 'vue-router';
+import Vuelidate from 'vuelidate';
+import Vuesax from 'vuesax';
+import 'vuesax/dist/vuesax.css';
 import 'material-icons/iconfont/material-icons.css';
 import LinkDetails from './components/LinkDetails';
 import Form from './components/Form';
 import Layout from './Layout';
-import NotFound from './pages/NotFound'
+import NotFound from './pages/NotFound';
+import Register from './pages/Register';
+import Connect from './pages/Connect';
 
 
 Vue.use(VueRouter);
+Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
 Vue.use(Vuesax, {
@@ -22,6 +26,19 @@ const router = new VueRouter({
     {
       path: '/',
       redirect: '/app',
+    },
+    {
+      path: '/inscription',
+      component: Register,
+      name: "register",
+      meta: { title : "Inscription" }
+
+    },
+    {
+      path: '/connexion',
+      component: Connect,
+      name: "connect",
+      meta: { title : "Connexion" }
     },
     {
       path: '/form',
@@ -46,6 +63,11 @@ const router = new VueRouter({
       props: (route) => ({
         linkId: route.params.id
       })
+    },
+    {
+      path: '/404',
+      component: NotFound,
+      name: "404"
     },
     {
       path: '*',

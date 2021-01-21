@@ -1,21 +1,20 @@
 <template>
   <div class="layout">
     <vs-navbar 
-      v-model="indexActive"
-      color="rgba(29,25,77,1)"
       text-color="rgba(255,255,255,.6)"
       active-text-color="rgba(255,255,255,1)"
       class="myNavbar"
     >
       <div slot="title">
-        <vs-navbar-title> HACKERS NEWS </vs-navbar-title>
+        <router-link :to="{ name: 'app' }"><vs-navbar-title> HACKERS NEWS </vs-navbar-title></router-link>
       </div>
-      <vs-navbar-item index="0"
-        ><router-link :to="{ name: 'app' }">Home</router-link></vs-navbar-item
-      >
-      <vs-navbar-item index="1"
-        ><router-link :to="{ name: 'form' }">Form</router-link></vs-navbar-item
-      >
+      
+      <vs-navbar-item index="0">
+        <router-link :to="{ name: 'register' }">Inscription</router-link>
+      </vs-navbar-item>
+      <vs-navbar-item index="1">
+        <router-link :to="{ name: 'connect' }">Connexion</router-link>
+      </vs-navbar-item>
       <!-- Peut prendre params et query pour passer des paramètres -->
     </vs-navbar>
     <router-view></router-view>
@@ -28,6 +27,11 @@
 * {
     font-family: 'Roboto', sans-serif;
     list-style: none;
+    text-decoration: none;
+}
+
+a {
+  color: white;
 }
 
 .input-color {
@@ -37,6 +41,6 @@
 }
 
 .myNavbar {
-  color: rgb(255, 255, 255);
+  color: rgba(255, 255, 255, 1);
 }
 </style>
