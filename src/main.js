@@ -15,6 +15,7 @@ import Register from './pages/Register';
 import Connect from './pages/Connect';
 
 Vue.config.productionTip = false;
+Vue.config.errorHandler = (err, vm) => console.log("error: ", err, "from: ", vm);
 Vue.use(VueRouter);
 Vue.use(Vuelidate);
 Vue.use(Vuex);
@@ -92,7 +93,8 @@ const router = new VueRouter({
       path: '/connexion',
       component: Connect,
       name: "connect",
-      meta: { title : "Connexion" }
+      meta: { title : "Connexion" },
+      beforeEnter: console.log("connect"),
     },
     {
       path: '/form',

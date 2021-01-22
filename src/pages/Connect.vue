@@ -103,7 +103,8 @@ export default {
     }
   },
   mounted(){
-    this.isJustRegistered()
+    this.isJustRegistered();
+    this.setToken(null);
   }
 };
 </script>
